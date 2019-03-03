@@ -1,0 +1,30 @@
+version: "3"
+services:
+  webserver:
+    # image:
+    build: .
+    volumes:
+      - "./code:/home/webserver/www"
+      - "/home/webserver/www/node_modules"
+    # volumes:
+    ports:
+      - "8080:8080"
+    command: ["npm", "start"]
+
+
+  nginx-reverse-proxy:
+    image: "linuxserver/letsencrypt"
+    environment:
+      - PUID=1001
+      - PGID=1001
+      - TZ=America/New_York
+      - URL=waketfup.net
+      - SUBDOMAINS=www
+      - VALIDATION=http
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./nginx.conf:/config/nginx/site-confs/default"
+    links:
+      - webserver:webserver

@@ -4,7 +4,7 @@ RUN useradd --user-group --create-home --shell /bin/false webserver
 
 ENV HOME=/home/webserver
 
-COPY package*.json $HOME/www/
+COPY code/package*.json $HOME/www/
 
 RUN chown -R webserver:webserver /home/webserver/*
 
